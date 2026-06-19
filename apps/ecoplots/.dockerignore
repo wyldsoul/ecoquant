@@ -1,0 +1,10 @@
+.git
+archive
+docs
+logs
+results
+*.zip
+*.tar
+*.tar.gz
+EcoPlots/*.rds
+EcoPlots/*.csv

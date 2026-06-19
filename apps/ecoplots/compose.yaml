@@ -1,0 +1,50 @@
+services:
+  ecoplots:
+    build:
+      context: .
+    image: ecoquant-ecoplots:latest
+    container_name: ecoplots
+    restart: unless-stopped
+    volumes:
+      - ./EcoPlots:/srv/shiny-server/EcoPlots:ro
+      - ./logs/shiny-server:/var/log/shiny-server
+      - ./auth_sessions:/srv/shiny-server/auth_sessions
+    environment:
+      SHINY_LOG_STDERR: "1"
+      EQI_AUTH_SESSION_DIR: /srv/shiny-server/auth_sessions
+      EQI_AUTH_COOKIE_DAYS: "30"
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-net"
+      - "traefik.http.routers.ecoplots.rule=Host(`app.ecoquantinsight.com`)"
+      - "traefik.http.routers.ecoplots.entrypoints=websecure"
+      - "traefik.http.routers.ecoplots.tls.certresolver=myresolver"
+      - "traefik.http.services.ecoplots.loadbalancer.server.port=3838"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3838/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 45s
+
+  heatmap-worker:
+    build:
+      context: .
+    image: ecoquant-ecoplots:latest
+    profiles:
+      - tools
+    working_dir: /workspace
+    entrypoint: ["python3", "/workspace/python/run_heatmap.py"]
+    environment:
+      EQI_RESULTS_DIR: /workspace/results
+      EQI_HEATMAP_OUTPUT_DIR: /workspace/EcoPlots/www/heatmap
+    volumes:
+      - ./python:/workspace/python:ro
+      - ./EcoPlots:/workspace/EcoPlots
+      - ../../results:/workspace/results:ro
+
+networks:
+  traefik-net:
+    external: true

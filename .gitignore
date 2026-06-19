@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Discord bot runtime files
+discord/activity_feed_bot/.env
+discord/activity_feed_bot/venv/
+discord/activity_feed_bot/activity_feed_bot.log
+
+# EcoQuant runtime state and logs
+apps/ecoplots/.state/
+apps/ecoplots/logs/
+results/
+
+# Oversized generated datasets that exceed GitHub limits
+apps/ecoplots/EcoPlots/stock_history_1y.rds
+apps/ecoplots/EcoPlots/loessdata_1y.rds
+apps/ecoplots/EcoPlots/eqi_stock_master_daily_1y.rds
+apps/ecoplots/EcoPlots/eqi_daily_ranked_universe_1y.rds
+
+# Workspace artifacts
+.agents/
+.codex/
+archive/
