@@ -13,6 +13,7 @@ discord/activity_feed_bot/activity_feed_bot.log
 apps/ecoplots/.state/
 apps/ecoplots/logs/
 results/
+*.rds
 
 # Oversized generated datasets that exceed GitHub limits
 apps/ecoplots/EcoPlots/stock_history_1y.rds
